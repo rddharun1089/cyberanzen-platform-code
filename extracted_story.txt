@@ -1,0 +1,216 @@
+he expanded master storyline
+Case ID: LS-047 — The Last Signal
+Location: Advanced Research and Intelligence Laboratory (ARIL), a fictional university research facility.
+Missing researcher: Dr. Arjun Raman, lead investigator of Project Phantom.
+Project Phantom: A confidential research programme combining secure communication systems, intelligent surveillance, embedded sensor networks, and AI-based anomaly detection.
+At 8:47 PM on a Friday night, the university's emergency monitoring system receives an encrypted message from inside the laboratory. Seconds later, the laboratory's monitoring dashboard goes offline. Several server records become unavailable, a prototype sensor network begins reporting impossible readings, and Dr. Arjun cannot be located.
+When investigators enter the laboratory, they find a damaged workstation, an empty equipment cabinet, a missing encrypted storage device, and a handwritten note containing the phrase:
+"The signal was never lost. Someone changed what it meant."
+Initial investigators believe a physical intruder stole the research and escaped. However, a closer examination reveals inconsistencies: the access card records show an authorised entry, the camera system contains a gap, and an AI-generated suspect report points toward a student whose account may have been misused.
+As the investigation expands, teams uncover evidence of earlier incidents involving the same laboratory: missing files, failed backups, altered sensor readings, unexplained account activity, damaged equipment, and reports that were quietly removed from the university's records.
+The central mystery: Was Dr. Arjun the victim of a planned abduction, did he discover an insider's crime, or did someone deliberately stage the disappearance to conceal a much larger digital operation?
+The answer should emerge from the evidence rather than being revealed at the beginning.
+01. The Missing Researcher
+Dr. Arjun Raman disappears after his final laboratory session. His office is locked, but his personal notebook remains open to a page describing an unknown signal.
+Evidence: Notebook, visitor register, final calendar entry.
+Question: When was he last reliably seen?
+02. The Vanishing Research Files
+Twenty-three research files are missing from the Project Phantom workstation. The file index lists their names, but the corresponding files cannot be found.
+Evidence: Directory listing, file manifest, backup inventory.
+03. The Damaged Workstation
+A workstation is found damaged near the laboratory entrance. The damage appears dramatic, but the forensic image suggests that the last recorded activity occurred earlier.
+Evidence: Device inspection sheet, file timestamps, disk image summary.
+04. The Empty USB Locker
+A USB device registered to the laboratory is missing. The inventory system records its return, but the receiving signature does not match the technician's usual signature.
+Evidence: Inventory register, sign-in sheet, device serial number.
+05. The Silent Server
+The research file server stops responding at 8:41 PM. Its hardware health record shows no clear power failure, while its application logs stop abruptly.
+Evidence: Server event log, UPS record, service status report.
+06. The Encrypted Message
+A short encoded message is recovered from a local terminal. Its contents refer to a time, a location, and the phrase "second key."
+Evidence: Text file, encoding reference card, terminal history.
+07. The Impossible Entry
+An access card records an entry at 8:42 PM, but the card's owner claims to have left campus at 8:05 PM.
+Evidence: Access log, departure register, witness statement.
+08. The Missing Camera Minutes
+The laboratory camera archive is missing six minutes of footage. The adjacent hallway camera remains operational.
+Evidence: Camera indexes, adjacent-camera timestamps, maintenance records.
+09. The Disconnected Sensor
+A door sensor reports that the laboratory remained closed, while the access-control system records an entry.
+Evidence: Sensor trace, RFID log, circuit inspection card.
+10. The Last Email
+Dr. Arjun receives an email warning him not to access Project Phantom. The displayed sender is a university executive, but the sender address is unfamiliar.
+Evidence: Fictional email header, sender address, message timestamps.
+Act II — The compromised infrastructure
+Cases 11–20 · Beginner to intermediate · Find the technical connections
+Case
+Incident
+Evidence to investigate
+11
+The Corrupted Database
+Database integrity report, transaction log and record counts
+12
+The Missing Backup
+Backup schedule, storage inventory and failed-job reports
+13
+The Altered Login History
+Authentication log, account history and timestamp discrepancies
+14
+The Unknown Device
+Network inventory, DHCP records and device fingerprint summary
+15
+The Suspicious File Transfer
+Synthetic PCAP, file-access records and transfer metadata
+16
+The Broken Encryption Key
+Key inventory, key version history and recovery documentation
+17
+The Unusual Administrator Session
+Privileged login records and approved maintenance windows
+18
+The Disappearing Emails
+Mailbox audit records and archive index
+19
+The Misconfigured Research Server
+Fictional server configuration, access policy and audit report
+20
+The Failed Recovery Test
+Recovery logs, backup hashes and a simulated restoration report
+How these ten cases connect
+Case 11 reveals that some database records were changed before the disappearance.
+Case 12 shows that the most recent backup did not contain the missing files.
+Case 13 reveals an account session inconsistent with the account owner's statement.
+Case 14 introduces a device not present in the approved inventory.
+Case 15 links the suspicious device to a possible data transfer.
+Case 16 reveals that two versions of a recovery key were recorded.
+Case 17 identifies an administrative session that needs further explanation.
+Case 18 shows that an important message is missing from one mailbox but referenced elsewhere.
+Case 19 reveals a weakness in the fictional server's access policy.
+Case 20 demonstrates that the university's recovery procedure would not have restored all the missing research.
+Act III — The electronic crime scene
+Cases 21–30 · Intermediate · ECE, CSE and cybersecurity investigation
+21. The Impossible Temperature
+A temperature sensor reports a sudden change that should be physically impossible under the laboratory's documented conditions.
+Evidence: Temperature CSV, reference calibration chart, sampling interval.
+Challenge: Distinguish a sensor malfunction from a manipulated record.
+22. The Phantom Device
+A fictional embedded device appears in a device inventory despite having no approved installation record.
+Evidence: Device IDs, firmware manifest, connection timestamps.
+Challenge: Determine which records associate the device with the lab incident.
+23. The Missing Five Minutes
+The sensor controller's log contains a five-minute gap, while the central monitoring system records uninterrupted activity.
+Evidence: Two timestamped signal traces and controller event records.
+Challenge: Correlate the clocks and identify the period that cannot be verified.
+24. The Burnt Controller
+A sensor controller is found damaged. Its maintenance history shows an inspection shortly before the incident.
+Evidence: Component inventory, maintenance notes, fault codes.
+Challenge: Establish what the records prove about the device's condition before the incident.
+25. The Duplicate Access Card
+Two access events use the same fictional card identifier at locations that should not be reachable within the recorded time interval.
+Evidence: Access-control events, door locations and walking-time chart.
+Challenge: Find the timeline contradiction without assuming that the card owner is guilty.
+26. The Disconnected Network Link
+A network monitoring record shows a brief loss of connectivity. The switch's event log suggests a different start time.
+Evidence: Switch log, network monitoring graph, clock offset notes.
+Challenge: Reconcile the timestamps and decide whether the outage explains the missing records.
+27. The Fragmented Research File
+A damaged research file can be partially reconstructed from a supplied evidence bundle.
+Evidence: File fragments, format signature reference, SHA-256 manifest.
+Challenge: Recover the relevant fragment and verify its integrity.
+28. The Restart That Never Happened
+A server status report says the machine restarted, but the event log contains no corresponding boot record.
+Evidence: Uptime summary, operating-system events, monitoring history.
+Challenge: Identify which record is insufficient or inconsistent and state what additional evidence is needed.
+29. The Unregistered Storage Device
+A device is found in the evidence inventory but does not appear in the authorised equipment register.
+Evidence: Inventory, device metadata, file manifest.
+Challenge: Establish whether the device could contain a relevant copy of Project Phantom.
+30. The Second Key
+A second key identifier appears in a recovered note. It conflicts with the key version listed in the recovery documentation.
+Evidence: Key registry, note fragment, recovery log.
+Act IV — The AI deception
+Cases 31–40 · Intermediate to advanced · AI/ML, data integrity and digital forensics
+Case
+Incident
+Main challenge
+31
+The Wrong Suspect
+Evaluate an AI report that flags Nila; identify why the result is not conclusive.
+32
+The Forged Voice Note
+Compare a fictional voice-analysis report with provenance records and known limitations.
+33
+The Altered Photograph
+Inspect image metadata and compare the image with an independently supplied reference.
+34
+The Fabricated Attendance Record
+Reconcile attendance records with access logs and other corroborating evidence.
+35
+The Missing Training Dataset
+Compare dataset inventories, version histories and model-training records.
+36
+The Biased Detection Model
+Calculate precision and recall from a synthetic labelled dataset and examine false positives.
+37
+The Generated Witness Statement
+Find contradictions between an AI-generated statement and verified event records.
+38
+The Poisoned Research Labels
+Identify inconsistent labels in a small synthetic dataset and measure their effect on a supplied result.
+39
+The False Confidence Score
+Explain why a model's high confidence score does not establish the truth of an accusation.
+40
+The Deleted AI Audit Trail
+Reconstruct model usage from independent logs when the primary audit record is incomplete.
+How Act IV changes the investigation
+The university's AI system identifies Nila as the most suspicious person because her account appears in several anomalous events. The initial report describes the result as a high-confidence match.
+However, participants discover that:
+The model was trained using an incomplete dataset.
+Some records were incorrectly labelled.
+The account identifier was treated as if it proved the identity of the person using the account.
+The model's audit history is incomplete.
+Independent evidence does not establish that Nila operated the workstation.
+Act V — The insider conspiracy
+Cases 41–50 · Advanced · Multi-source investigation and final reconstruction
+These final ten incidents should reveal the connections between the earlier cases. Each one gives the investigators another piece of the larger puzzle.
+41. Project Phantom's Hidden Archive
+A previously unknown research archive appears in an old inventory. Its manifest lists files missing from the main server.
+Evidence: Archive manifest, file hashes, historical inventory.
+Reveal: Some missing research existed in a separate location before the disappearance.
+42. The Administrator's Shadow
+A privileged account appears in several records where the account owner claims no activity occurred.
+Evidence: Authentication history, approved maintenance windows, session records.
+Reveal: Privileged access must be correlated with other evidence before it can be attributed to a person.
+43. The Unsigned Order
+A maintenance instruction authorises a temporary monitoring shutdown, but the approving signature cannot be verified.
+Evidence: Approval register, document metadata, staff roster.
+Reveal: The monitoring interruption may have been authorised using a false or incomplete approval trail.
+44. The Two Timelines
+The official incident report and the independently reconstructed timeline differ by several minutes.
+Evidence: All prior timestamps, documented clock offsets, access records.
+Reveal: A key event was placed in the wrong order in the original report.
+45. The Backup That Was Never Tested
+The university's official recovery report claims the research was recoverable. A supplied test log shows that the relevant files were never included in the last verified restoration test.
+Evidence: Backup manifest, recovery checklist, test results.
+Reveal: The institution's recovery assurance was based on incomplete evidence.
+46. The Duplicate Research Copy
+A recovered file matches an earlier version of Project Phantom but has a different timestamp and filename.
+Evidence: File hashes, version history, archive manifest.
+Reveal: A copy of the research may have existed outside the main server before the apparent theft.
+47. Dr. Arjun's Final Note
+A note recovered from a fictional storage locker explains why Arjun began investigating irregularities in Project Phantom.
+Evidence: Notebook fragment, document provenance, earlier incident reports.
+Reveal: Arjun had identified inconsistencies before his disappearance, but the note does not establish who took him.
+48. The Accomplice Question
+Several records connect Karan's maintenance actions with the suspicious time window, but none directly proves that he knowingly participated in the theft.
+Evidence: Maintenance records, statements, access timeline.
+Reveal: Teams must distinguish negligence, opportunity and deliberate participation.
+49. The Final Signal
+The recovered fragments form a message that refers to an evidence archive and a time window. The message is only useful when combined with the independently verified logs.
+Evidence: Encoded note, archive manifest, corrected timeline.
+Reveal: Teams identify the final evidence bundle that links the missing research to the privileged session.
+50. The Last Signal — Final Case Report
+All teams must reconstruct the incident, identify the best-supported culprit, explain the technical failures, evaluate the AI false lead, and recommend safeguards.
+Evidence: Selected artifacts from all previous cases.
+Reveal: The final answer must explain both the crime and how the investigation initially went wrong.

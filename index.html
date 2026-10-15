@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROJECT ENIGMATRIX — The Last Signal (Case LS-047)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+  <!-- CodeMirror for Python, C & C++ Code Editor -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-ocean.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+
+  <!-- In-Browser Python 3.11 + NumPy WebAssembly -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+
+  <link rel="stylesheet" href="styles.css?v=5.0">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-brand" id="navHome">
+      <div class="logo-mark">PE</div>
+      <div class="logo-text">
+        <span class="logo-title">PROJECT ENIGMATRIX</span>
+        <span class="logo-subtitle">CASE FILE LS-047 · ARIL LAB INVESTIGATION</span>
+      </div>
+    </div>
+
+    <nav class="header-nav">
+      <button class="nav-link active" data-target="home" id="navHomeLink">1. Team Access</button>
+      <button class="nav-link locked-nav" data-target="story" id="navStoryLink" style="display:none">2. Story Dossier</button>
+      <button class="nav-link locked-nav" data-target="arena" id="navArenaLink" style="display:none">3. Investigation Arena (80 Ch)</button>
+      <button class="nav-link locked-nav" data-target="leaderboard" id="navLeaderboardLink" style="display:none">Leaderboard</button>
+      <button class="nav-link admin-nav-btn" data-target="admin">⚙️ Admin</button>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-pill-badge" id="langBadge">
+        <span class="lang-tag active" data-lang="python">PY</span>
+        <span class="lang-tag" data-lang="c">C</span>
+        <span class="lang-tag" data-lang="cpp">C++</span>
+      </div>
+      <div class="runtime-badge" id="runtimeBadge">
+        <span class="dot-indicator loading"></span>
+        <span id="runtimeText">Booting WASM Compiler...</span>
+      </div>
+      <div class="team-badge hidden" id="activeTeamBadge">
+        <span class="team-name" id="badgeTeamName">Team</span>
+        <span class="team-score" id="badgeTeamScore">0 PTS</span>
+        <button class="btn-signout" id="btnSignOutHeader" title="Sign out of team">⎋ Exit</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="app-main">
+
+    <!-- ==========================================
+         VIEW 1: RESTRICTED INVESTIGATOR LOGIN GATE
+         ========================================== -->
+    <section id="viewHome" class="view-section active">
+      <div class="login-gate-container">
+        
+        <!-- Header Clearance Banner -->
+        <div class="security-clearance-banner">
+          <span class="lock-shield-icon">🔒</span>
+          <span class="clearance-tag">ARIL CLASSIFIED ARCHIVE // LEVEL 04 CLEARANCE REQUIRED</span>
+          <span class="pulse-indicator"></span>
+        </div>
+
+        <div class="login-card-wrapper">
+          <div class="login-brand-header">
+            <div class="login-logo-mark">PROJECT ENIGMATRIX</div>
+            <h2>Investigator Terminal Access</h2>
+            <p class="login-instruction">
+              Enter your assigned <strong>Team Name</strong> and <strong>6-digit Access PIN</strong> to decrypt Case LS-047 transmissions and unlock the 80-Chapter Investigation Arena.
+            </p>
+          </div>
+
+          <!-- Dual Tab Switcher: Sign In vs Register -->
+          <div class="login-tabs-bar" id="authTabsBar">
+            <button class="login-tab-btn active" id="tabBtnSignIn">🔑 Sign In with Team PIN</button>
+            <button class="login-tab-btn" id="tabBtnRegister">📝 Register New Team</button>
+          </div>
+
+          <!-- TAB 1: Direct Team Sign In Form -->
+          <div id="loginSignInState" class="login-tab-content active">
+            <form id="directSignInForm" class="auth-form">
+              <div class="input-field">
+                <label for="directLoginTeamName">Team Name</label>
+                <input type="text" id="directLoginTeamName" placeholder="e.g. EnigmaInvestigators" required autocomplete="off">
+              </div>
+
+              <div class="input-field">
+                <label for="directLoginTeamPin">6-Digit Team Access PIN</label>
+                <input type="password" id="directLoginTeamPin" placeholder="Enter 6-digit PIN" required maxlength="8" autocomplete="off">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px">
+                🚀 AUTHENTICATE &amp; ENTER INVESTIGATION <span>→</span>
+              </button>
+
+              <div id="directSignInError" class="form-error"></div>
+
+              <!-- Quick autofill sample teams for instant testing -->
+              <div class="quick-team-picker">
+                <span class="picker-label">Quick Test Teams:</span>
+                <div class="picker-tags">
+                  <button type="button" class="team-quick-tag" data-team="EnigmaInvestigators" data-pin="849201">EnigmaInvestigators (849201)</button>
+                  <button type="button" class="team-quick-tag" data-team="VectorKnights" data-pin="319402">VectorKnights (319402)</button>
+                  <button type="button" class="team-quick-tag" data-team="GradientGhosts" data-pin="758190">GradientGhosts (758190)</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 2: Register New Team Form -->
+          <div id="loginRegisterState" class="login-tab-content hidden">
+            <form id="directRegisterForm" class="auth-form">
+              <div class="input-field">
+                <label for="regTeamName">New Team Name</label>
+                <input type="text" id="regTeamName" placeholder="e.g. CyberSherlocks" required maxlength="32" autocomplete="off">
+              </div>
+
+              <div class="input-field">
+                <div class="label-with-action">
+                  <label for="regTeamPin">Team Access PIN</label>
+                  <button type="button" class="btn-text" id="btnGenRegPin">🎲 Generate Random PIN</button>
+                </div>
+                <input type="text" id="regTeamPin" placeholder="Click Generate or enter PIN" maxlength="8">
+                <small class="field-hint">All team members use this single PIN to sign in.</small>
+              </div>
+
+              <div class="input-field">
+                <label for="regAffiliation">Institution / Department <small>(Optional)</small></label>
+                <input type="text" id="regAffiliation" placeholder="e.g. Department of Cyber Forensics" maxlength="40">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px">
+                CREATE TEAM &amp; ENTER ARENA <span>→</span>
+              </button>
+
+              <div id="regErrorMsg" class="form-error"></div>
+            </form>
+          </div>
+
+          <!-- State C: Logged In Clearance Card (when already authenticated) -->
+          <div id="loginActiveState" class="login-tab-content hidden">
+            <div class="active-clearance-card">
+              <div class="clearance-tag-success">✓ CLEARANCE VERIFIED · ACCESS LEVEL 04 GRANTED</div>
+              <h3 id="activeWelcomeTeamName">Welcome, Team!</h3>
+              <p class="text-secondary text-sm">Your credentials are authenticated. All 80 forensic chapters and technical workspaces are unlocked.</p>
+
+              <div class="pin-display-box" style="margin:16px 0">
+                <div class="pin-label">OFFICIAL TEAM PIN (SHARE WITH MEMBERS)</div>
+                <div class="pin-value-row">
+                  <span class="pin-code" id="activeClearancePin">000000</span>
+                  <button class="btn btn-sm btn-outline" id="btnCopyActivePin">📋 Copy PIN</button>
+                </div>
+              </div>
+
+              <div class="active-team-stats-row">
+                <div class="stat-pill"><span class="stat-num" id="activeClearanceSolves">0</span> Solves</div>
+                <div class="stat-pill"><span class="stat-num" id="activeClearanceScore">0</span> Points</div>
+              </div>
+
+              <button class="btn btn-primary btn-block btn-lg" id="btnGoToArenaDirect" style="margin-top:16px">
+                🚀 ENTER INVESTIGATION ARENA &amp; STORY <span>→</span>
+              </button>
+
+              <button type="button" class="btn-text btn-reset-team" id="btnSignOutHome" style="margin-top:12px">⎋ Sign Out of Team</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 2: CASE DOSSIER & MASTER BACKSTORY
+         ========================================== -->
+    <section id="viewStory" class="view-section">
+      <div class="content-container">
+        
+        <!-- Case Header -->
+        <div class="story-header-card">
+          <div class="story-tag">CASE LS-047 · ADVANCED RESEARCH &amp; INTELLIGENCE LABORATORY (ARIL)</div>
+          <h2>The Disappearance of Dr. Arjun Raman</h2>
+          <p class="story-lead">
+            Dr. Arjun Raman, lead investigator of <strong>Project Enigmatrix</strong> — a confidential initiative combining secure telemetry, embedded sensor networks, and AI anomaly detection — vanished from the ARIL facility on Friday night at 8:47 PM.
+          </p>
+
+          <div class="dossier-meta-row">
+            <div><span>FACILITY</span><strong>ARIL Lab, Building 4</strong></div>
+            <div><span>STATUS</span><strong style="color:var(--amber)">UNRESOLVED // MULTI-ACT INVESTIGATION</strong></div>
+            <div><span>KEY EVIDENCE</span><strong style="color:var(--cyan)">NOTEBOOK, ENCRYPTED TRANSMISSION &amp; SENSOR LOGS</strong></div>
+          </div>
+        </div>
+
+        <!-- The Central Mystery & Key Persons -->
+        <div class="story-suspects-grid">
+          <div class="suspect-card">
+            <div class="suspect-tag">MISSING RESEARCHER</div>
+            <h4>Dr. Arjun Raman</h4>
+            <p>Discovered data tampering and unauthorized neural extractions before disappearing. Left behind an open notebook with the words: <em>"The signal was never lost. Someone changed what it meant."</em></p>
+          </div>
+          <div class="suspect-card framed">
+            <div class="suspect-tag" style="color:var(--rose)">AI FALSE ACCUSATION</div>
+            <h4>Nila (Research Scholar)</h4>
+            <p>Falsely flagged with 98.4% confidence by an automated AI surveillance model. Investigation reveals poisoned training labels and spoofed card access.</p>
+          </div>
+          <div class="suspect-card">
+            <div class="suspect-tag" style="color:var(--amber)">PERSON OF INTEREST</div>
+            <h4>Karan (Lab Technician)</h4>
+            <p>Performed unverified sensor maintenance during the critical blackout window. Claims equipment negligence rather than intentional conspiracy.</p>
+          </div>
+          <div class="suspect-card">
+            <div class="suspect-tag" style="color:var(--purple)">THE INSIDER THREAT</div>
+            <h4>The Rogue Administrator</h4>
+            <p>Operated under shadow accounts, falsified maintenance orders, and attempted to hide exfiltrated research inside neural network weight matrices.</p>
+          </div>
+        </div>
+
+        <!-- The 5 Acts Roadmap -->
+        <div class="story-timeline-card">
+          <h3>Project Enigmatrix: 80-Chapter Investigation Roadmap (Acts I – V)</h3>
+          
+          <div class="timeline-list">
+            <div class="timeline-row">
+              <div class="time-col">ACT I</div>
+              <div class="detail-col">
+                <strong>The Disappearance &amp; The Lab Breach (Chapters 01–16)</strong>
+                <p>23 research files vanished from the workstation at 8:41 PM. Emergency monitors received an encrypted message referencing "the second key". Decipher timestamps, signatures, and sensor pin overrides.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-col">ACT II</div>
+              <div class="detail-col">
+                <strong>Compromised Infrastructure (Chapters 17–32)</strong>
+                <p>Database records altered prior to the blackout, backups purged, rogue MAC addresses, and stealth PCAP file exfiltration.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-col">ACT III</div>
+              <div class="detail-col">
+                <strong>The Electronic Crime Scene (Chapters 33–48)</strong>
+                <p>Impossible temperature drops, 5-minute sensor controller gaps, duplicated RFID access badges, and fragmented research data.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-col">ACT IV</div>
+              <div class="detail-col">
+                <strong>The AI Deception &amp; Neural Sabotage (Chapters 49–64)</strong>
+                <p>Auditing the AI threat detection model. Uncovering biased evaluation metrics, adversarial evasion noise (FGSM), and poisoned labels that framed Nila.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-col">ACT V</div>
+              <div class="detail-col">
+                <strong>The Insider Conspiracy &amp; Final Signal (Chapters 65–80)</strong>
+                <p>Extracting the hidden payload embedded inside neural model weights, inverting the decision boundary, assembling master secret shares, and delivering the final case report.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action to Start Solving -->
+        <div class="story-footer-action">
+          <div>
+            <h4>Enter the Episodic Story Arena</h4>
+            <p>Proceed through all 80 narrative chapters, write investigative code in Python, C, or C++, and solve Case LS-047.</p>
+          </div>
+          <button class="btn btn-primary btn-lg" id="btnProceedToArena">
+            Enter Investigation Arena (80 Chapters) <span>→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 3: INVESTIGATION ARENA (STORY-FIRST FLOW)
+         ========================================== -->
+    <section id="viewArena" class="view-section arena-section">
+      
+      <!-- Top Investigation Control & Progress Bar -->
+      <div class="arena-top-control-bar">
+        <div class="arena-control-left">
+          <div class="act-pills-scroll">
+            <button class="act-nav-pill active" data-act="1">Act I (01-16)</button>
+            <button class="act-nav-pill" data-act="2">Act II (17-32)</button>
+            <button class="act-nav-pill" data-act="3">Act III (33-48)</button>
+            <button class="act-nav-pill" data-act="4">Act IV (49-64)</button>
+            <button class="act-nav-pill" data-act="5">Act V (65-80)</button>
+          </div>
+          <div class="chapter-quick-nav">
+            <button class="btn-icon" id="btnPrevChapter" title="Previous Chapter">◀</button>
+            <span class="chapter-nav-label" id="currentChapterLabel">Chapter 01 of 80</span>
+            <button class="btn-icon" id="btnNextChapter" title="Next Chapter">▶</button>
+          </div>
+        </div>
+
+        <div class="arena-control-right">
+          <div class="progress-box">
+            <span class="progress-text" id="topProgressText">0 / 80 Decrypted (0 PTS)</span>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="topProgressBar" style="width: 0%"></div>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline" id="btnOpenStoryMap">🗺️ Story Map &amp; 80 Chapters</button>
+        </div>
+      </div>
+
+      <!-- Main Story-First Layout -->
+      <div class="story-flow-container">
+
+        <!-- ==========================================
+             PHASE 1: STORY NARRATIVE INTERCEPT CARD
+             (Always appears first in the investigation)
+             ========================================== -->
+        <article class="story-narrative-card" id="storyNarrativeCard">
+          
+          <div class="story-card-topbar">
+            <div class="incident-badge-row">
+              <span class="badge-act" id="chalActBadge">ACT 01 // CASE 01</span>
+              <span class="badge-code" id="chalIncidentCode">#LS047-CH01</span>
+              <span class="badge-domain" id="chalDomainBadge">Digital Forensics</span>
+            </div>
+            <div class="story-card-points" id="chalPointsBadge">30 PTS</div>
+          </div>
+
+          <div class="story-headline-row">
+            <div class="meta-location-stamp" id="chalLocationStamp">TIMESTAMP: 8:47 PM // ARIL BUILDING 4 CLEANROOM</div>
+            <h2 class="story-chapter-title" id="chalStoryTitle">Chapter 01: The Missing Researcher</h2>
+          </div>
+
+          <!-- Story Narrative Text Box -->
+          <div class="story-narrative-body">
+            <div class="story-transmission-header">
+              <span class="pulse-dot"></span>
+              <strong>TRANSMISSION LOG &amp; INVESTIGATION BRIEFING</strong>
+            </div>
+            <p class="story-lore-paragraph" id="chalStoryLore">
+              8:47 PM. The rain hammered against the glass of ARIL Building 4. When the emergency telemetry alarm screeched, security found Dr. Arjun Raman's office door bolted from the inside. His desk was littered with sensor printouts, but the man was gone. On his monitor, an unhandled exception flickered with a list of visitor timestamps.
+            </p>
+          </div>
+
+          <!-- Evidence Artifacts Accordion / Preview -->
+          <div class="evidence-artifacts-box">
+            <div class="evidence-box-header" id="btnToggleEvidence">
+              <span>📁 RECOVERED EVIDENCE ARTIFACTS</span>
+              <span class="toggle-icon" id="evidenceToggleIcon">▼ Expand Evidence Data</span>
+            </div>
+            <div class="evidence-box-content hidden" id="evidenceBoxContent">
+              <div class="evidence-sample-table" id="evidenceSampleData">
+                <!-- Dynamically populated sample evidence -->
+                <code>[EVIDENCE STREAM: ARIL-LOG-847.DAT]<br>20:15:22 TURNSTILE ENTRY - BADGE #704<br>20:30:10 SENSOR REED SWITCH PIN-12 HIGH<br>20:41:00 WORKSTATION 03 DISK POWERDOWN CLEAN<br>20:43:00 LAST RECORDED USER TOUCH</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decrypted Intelligence Box (Shown when Solved) -->
+          <div class="story-debrief-box hidden" id="chalDebriefBox">
+            <div class="debrief-header">
+              <span style="color:var(--emerald)">✓ CASE EVIDENCE DECRYPTED &amp; ADVANCED</span>
+              <span class="flag-pill" id="chalFlagPill">ENIGMA{...}</span>
+            </div>
+            <p id="chalDebriefText">Investigation debrief will appear here upon completion.</p>
+          </div>
+
+          <!-- Scroll to Code Action -->
+          <div class="story-card-footer">
+            <div class="story-status-note" id="chalStatusNote">Status: <span style="color:var(--amber)">AWAITING TECHNICAL VERIFICATION</span></div>
+            <button class="btn btn-primary" id="btnScrollToCode">
+              ⚡ Engage Technical Investigation (Code Workspace) ↓
+            </button>
+          </div>
+
+        </article>
+
+        <!-- ==========================================
+             PHASE 2: TECHNICAL CHALLENGE & MULTI-LANGUAGE IDE
+             (Presented immediately after the story narrative)
+             ========================================== -->
+        <article class="investigation-code-workspace" id="codeWorkspaceCard">
+          
+          <div class="workspace-grid">
+
+            <!-- Left / Top: Problem Formulation & Rules -->
+            <div class="problem-details-panel">
+              <div class="panel-section">
+                <h4>Investigator Objective</h4>
+                <div id="chalObjectiveText" class="text-secondary problem-objective-box">Problem description goes here.</div>
+              </div>
+
+              <div class="panel-section">
+                <h4>Input Contract</h4>
+                <pre class="formula-box"><code id="chalInputContractText"></code></pre>
+              </div>
+
+              <div class="panel-section">
+                <h4>Required Result</h4>
+                <pre class="sig-box"><code id="chalResultContractText"></code></pre>
+              </div>
+
+              <div class="form-grid-2" style="margin-top:4px">
+                <div class="panel-section">
+                  <h4>Sample Input (stdin)</h4>
+                  <pre class="sample-box"><code id="chalSampleInputText"></code></pre>
+                </div>
+                <div class="panel-section">
+                  <h4>Expected Output (stdout)</h4>
+                  <pre class="sample-box"><code id="chalSampleOutputText"></code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right / Bottom: Code Editor & Multi-Language Runner -->
+            <div class="editor-runner-panel">
+              
+              <!-- Interactive Compiler & Execution Deck -->
+              <div class="compiler-control-deck">
+                
+                <div class="compiler-top-row">
+                  <div class="active-engine-badge">
+                    <span class="engine-pulse-dot ready"></span>
+                    <div>
+                      <span class="engine-title" id="activeEngineTitle">Python 3.11 WASM Interpreter</span>
+                      <span class="engine-tag" id="activeEngineTag">In-Browser WASM · NumPy Active</span>
+                    </div>
+                  </div>
+
+                  <div class="lang-selector-group">
+                    <span class="lang-label">Select Compiler:</span>
+                    <button class="lang-btn active" data-lang="python" title="Execute Python 3.11 in-browser via WebAssembly">🐍 Python 3.11</button>
+                    <button class="lang-btn" data-lang="c" title="Compile C11 native source with Clang toolchain">⚙️ C (C11)</button>
+                    <button class="lang-btn" data-lang="cpp" title="Compile C++17 native source with Clang toolchain">🚀 C++ (C++17)</button>
+                  </div>
+                </div>
+
+                <div class="execution-action-bar">
+                  <div class="execution-helper-tip">
+                    <span class="tip-icon">💡</span>
+                    <span>Input: <code>stdin</code> · Output: <code>stdout</code> · Shortcut: <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+                  </div>
+
+                  <div class="editor-btn-actions">
+                    <button class="btn btn-sm btn-ghost" id="btnResetCode" title="Reset current editor code to initial template">↺ Reset Template</button>
+                    <button class="btn btn-sm btn-run-primary" id="btnRunTest" title="Run code with sample stdin input">
+                      ▶ RUN CODE (Sample Stdin)
+                    </button>
+                    <button class="btn btn-sm btn-submit-primary" id="btnSubmitSolution" title="Run against all test cases & unlock flag">
+                      🚀 SUBMIT SOLUTION &amp; VERIFY
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Security Anti-Cheat Alert Banner -->
+              <div class="security-editor-banner">
+                <span class="sec-icon">🛡️</span>
+                <span>ANTI-CHEAT INTEGRITY GUARD: Pasting external code is disabled. All solutions must be manually typed. Tab switches are logged in the event audit.</span>
+              </div>
+
+              <!-- CodeMirror Container -->
+              <div class="editor-box">
+                <textarea id="pythonEditor"></textarea>
+              </div>
+
+              <!-- Test Assertions & Terminal Drawer -->
+              <div class="console-drawer">
+                <div class="console-tabs">
+                  <button class="console-tab active" data-tab="tests">Test Assertions (<span id="testPassedCount">0/0</span>)</button>
+                  <button class="console-tab" data-tab="terminal">Execution Terminal</button>
+                  <button class="btn-text btn-clear-logs" id="btnClearLogs">Clear</button>
+                </div>
+
+                <!-- Tab 1: Unit Test Results -->
+                <div class="console-panel active" id="tabTests">
+                  <div id="testCardsList" class="test-cards-wrapper">
+                    <div class="console-empty">Click <strong>Run Test</strong> (Ctrl+Enter) or <strong>Submit &amp; Verify</strong> to validate your solution.</div>
+                  </div>
+                </div>
+
+                <!-- Tab 2: Terminal Output -->
+                <div class="console-panel" id="tabTerminal">
+                  <pre class="terminal-text" id="terminalLogs">WASM Compiler ready. Output from print() or printf() will appear here.</pre>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         VIEW 4: LEADERBOARD
+         ========================================== -->
+    <section id="viewLeaderboard" class="view-section">
+      <div class="content-container">
+        <div class="section-heading-row">
+          <div>
+            <h2>Investigator Standings</h2>
+            <p class="text-secondary">Teams ranked by verified case solves and investigation points across all 5 Acts.</p>
+          </div>
+          <button class="btn btn-sm btn-outline" id="btnRefreshBoard">↻ Refresh</button>
+        </div>
+
+        <div class="table-card">
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th width="70">RANK</th>
+                <th>TEAM NAME</th>
+                <th>ACT I</th>
+                <th>ACT II</th>
+                <th>ACT III</th>
+                <th>ACT IV</th>
+                <th>ACT V</th>
+                <th>SOLVES</th>
+                <th>TOTAL POINTS</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardRows">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 5: ADMIN STUDIO
+         ========================================== -->
+    <section id="viewAdmin" class="view-section">
+      <div class="content-container">
+        
+        <div id="adminLockState" class="admin-gate-box">
+          <h3>Lead Investigator Control</h3>
+          <p class="text-secondary">Enter the organizer passcode to manage team PINs, view the 80-chapter catalog, and unlock test modes.</p>
+          <form id="adminUnlockForm" class="auth-form" style="max-width:320px;margin:20px auto 0">
+            <input type="password" id="adminPassInput" placeholder="Passcode (Default: admin123)" required>
+            <button type="submit" class="btn btn-primary btn-block">Unlock Admin</button>
+            <div id="adminPassError" class="form-error"></div>
+          </form>
+        </div>
+
+        <div id="adminDashboardState" class="admin-panel hidden">
+          <div class="section-heading-row">
+            <div>
+              <h2>Project Enigmatrix Control Center</h2>
+              <p class="text-secondary">Organizer deck for live event management and challenge verification.</p>
+            </div>
+            <div style="display:flex;gap:10px">
+              <button class="btn btn-sm btn-outline" id="btnUnlockAllChapters">🔓 Unlock All 80 Chapters (Test Mode)</button>
+              <button class="btn btn-sm btn-outline" id="btnLockAdmin">Lock Studio</button>
+            </div>
+          </div>
+
+          <!-- Challenge Catalog Inspector -->
+          <div class="admin-card">
+            <h3>📖 80-Chapter Catalog &amp; Solution Inspector</h3>
+            <div class="admin-chal-selector-row">
+              <label for="adminSelectChapter">Select Chapter to Inspect:</label>
+              <select id="adminSelectChapter" class="admin-select"></select>
+            </div>
+            <div class="admin-chal-preview-box" id="adminChalPreviewBox">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <div class="admin-card" style="margin-top:24px">
+            <div class="section-heading-row">
+              <h3>Team Roster &amp; Access PINs</h3>
+              <button class="btn btn-sm btn-outline" id="btnExportCsv">📥 Export Roster CSV</button>
+            </div>
+            <div class="table-card" style="margin-top:12px">
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>TEAM NAME</th>
+                    <th>6-DIGIT PIN</th>
+                    <th>SOLVES</th>
+                    <th>POINTS</th>
+                    <th width="80">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTeamRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL: 80-CHAPTER STORY MAP & TIMELINE
+       ========================================== -->
+  <dialog id="storyMapDialog" class="modal-card story-map-modal">
+    <div class="story-map-box">
+      <div class="modal-head">
+        <div>
+          <h3>🗺️ Project Enigmatrix: 80-Chapter Investigation Map</h3>
+          <p class="text-secondary text-sm">Select any unlocked chapter to review its story narrative, examine evidence, and view your code.</p>
+        </div>
+        <button class="modal-close-btn" id="btnCloseStoryMap">×</button>
+      </div>
+
+      <div class="story-map-toolbar">
+        <div class="act-filter-pills" id="storyMapFilterPills">
+          <button class="filter-pill active" data-mapact="all">All Acts (80)</button>
+          <button class="filter-pill" data-mapact="1">Act I (01-16)</button>
+          <button class="filter-pill" data-mapact="2">Act II (17-32)</button>
+          <button class="filter-pill" data-mapact="3">Act III (33-48)</button>
+          <button class="filter-pill" data-mapact="4">Act IV (49-64)</button>
+          <button class="filter-pill" data-mapact="5">Act V (65-80)</button>
+        </div>
+        <input type="text" id="inputSearchChapters" placeholder="Search chapters by keyword, domain, title..." class="search-input">
+      </div>
+
+      <div class="story-map-grid" id="storyMapGrid">
+        <!-- 80 Chapter Cards populated dynamically -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==========================================
+       MODAL: CHAPTER SOLVE & STORY PROGRESSION
+       ========================================== -->
+  <dialog id="solveSuccessDialog" class="modal-card solve-modal">
+    <div class="solve-modal-box">
+      <div class="solve-header-badge">★ CHAPTER VERIFIED &amp; SOLVED ★</div>
+      <h2 id="solveModalTitle">Chapter 01 Solved!</h2>
+      <div class="solve-points-banner" id="solveModalPoints">+30 INVESTIGATION POINTS</div>
+
+      <div class="solve-flag-card">
+        <div class="flag-label">EVIDENCE FLAG UNLOCKED</div>
+        <div class="flag-code" id="solveModalFlag">ENIGMA{...}</div>
+      </div>
+
+      <div class="solve-narrative-reveal">
+        <h4>Master Story Narrative Progress:</h4>
+        <p id="solveModalDebrief">Decrypted evidence committed to master ledger.</p>
+      </div>
+
+      <div class="solve-modal-actions">
+        <button class="btn btn-primary btn-lg btn-block" id="btnModalNextChapter">
+          CONTINUE TO NEXT CHAPTER STORY NARRATIVE ➔
+        </button>
+        <button class="btn btn-ghost btn-block" id="btnModalStayChapter">
+          Stay on Current Chapter Workspace
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Login Modal -->
+  <dialog id="loginDialog" class="modal-card">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Team Sign In</h3>
+        <button class="modal-close-btn" id="btnCloseLogin">×</button>
+      </div>
+      <p class="text-secondary text-sm">Enter your registered Team Name and 6-digit access PIN.</p>
+
+      <form id="teamSignInForm" class="auth-form" style="margin-top:16px">
+        <div class="input-field">
+          <label for="loginTeamName">Team Name</label>
+          <input type="text" id="loginTeamName" placeholder="e.g. EnigmaInvestigators" required>
+        </div>
+        <div class="input-field">
+          <label for="loginTeamPin">Team 6-Digit PIN</label>
+          <input type="password" id="loginTeamPin" placeholder="Enter PIN" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Authenticate Team</button>
+        <div id="loginErrorMsg" class="form-error"></div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast-card"></div>
+
+  <!-- Scripts -->
+  <script src="challenges_data.js?v=5.0"></script>
+  <script src="app.js?v=5.0"></script>
+</body>
+</html>
